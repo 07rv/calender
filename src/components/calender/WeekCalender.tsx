@@ -72,7 +72,6 @@ const WeekCalender = () => {
                       className="relative flex h-12 cursor-pointer flex-col items-center gap-y-2 border-b border-gray-300 hover:bg-gray-100"
                     ></div>
                   ))}
-                  {/* Current time indicator */}
 
                   {isCurrentDay(dayDate) && today && (
                     <div

@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-const isCurrentDay = (day: dayjs.Dayjs) => {
+export const isCurrentDay = (day: dayjs.Dayjs) => {
   return day.isSame(dayjs(), "day");
 };
 
