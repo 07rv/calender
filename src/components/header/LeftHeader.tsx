@@ -1,8 +1,68 @@
+"use client";
+
 import { ChevronLeft, ChevronRight, Menu } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "next/image";
+import { useDateStore, useViewStore } from "@/store/store";
+import dayjs from "dayjs";
 
 const LeftHeader = () => {
+  const todaysDate = dayjs();
+  const { userSelectedDate, setDate, setMonth, selectedMonthIndex } =
+    useDateStore();
+  console.log(userSelectedDate, 1);
+  console.log(selectedMonthIndex, 2);
+
+  const { selectedView } = useViewStore();
+  const handleTodayClick = () => {
+    switch (selectedView) {
+      case "month":
+        setMonth(dayjs().month());
+        break;
+      case "week":
+        setDate(todaysDate);
+        break;
+      case "day":
+        setDate(todaysDate);
+        setMonth(dayjs().month());
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handlePrevClick = () => {
+    switch (selectedView) {
+      case "month":
+        setMonth(selectedMonthIndex - 1);
+        break;
+      case "week":
+        setDate(userSelectedDate.subtract(1, "week"));
+        break;
+      case "day":
+        setDate(userSelectedDate.subtract(1, "day"));
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleNextClick = () => {
+    switch (selectedView) {
+      case "month":
+        setMonth(selectedMonthIndex + 1);
+        break;
+      case "week":
+        setDate(userSelectedDate.add(1, "week"));
+        break;
+      case "day":
+        setDate(userSelectedDate.add(1, "day"));
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div className="flex items-center gap-3">
       <div className="hidden items-center lg:flex">
@@ -19,16 +79,26 @@ const LeftHeader = () => {
         <h1 className="text-xl">Calendar</h1>
       </div>
 
-      <Button className="mx-8" variant={"outline"}>
+      <Button onClick={handleTodayClick} className="mx-8" variant={"outline"}>
         Today
       </Button>
 
       <div className="flex items-center gap-2">
-        <ChevronLeft className="size-5 cursor-pointer font-bold" />
-        <ChevronRight className="size-5 cursor-pointer font-bold" />
+        <ChevronLeft
+          onClick={handlePrevClick}
+          className="size-5 cursor-pointer font-bold"
+        />
+        <ChevronRight
+          onClick={handleNextClick}
+          className="size-5 cursor-pointer font-bold"
+        />
       </div>
 
-      <h1 className="hidden text-xl lg:block">Oct 2024</h1>
+      <h1 className="hidden text-xl lg:block">
+        {dayjs(new Date(dayjs().year(), selectedMonthIndex)).format(
+          "MMMM YYYY"
+        )}
+      </h1>
     </div>
   );
 };
