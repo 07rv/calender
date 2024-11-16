@@ -2,6 +2,7 @@
 
 import { getMonth } from "@/lib/getTime";
 import { Fragment } from "react";
+import MonthViewBox from "./MonthViewBox";
 
 const MonthCalender = () => {
   const currMonth = getMonth();
@@ -11,7 +12,7 @@ const MonthCalender = () => {
       {currMonth.map((row, r_idx) => (
         <Fragment key={r_idx}>
           {row.map((day, c_idx) => (
-            <h3 key={c_idx}>{day.format("D")}</h3>
+            <MonthViewBox key={c_idx} day={day} rowIndex={r_idx} />
           ))}
         </Fragment>
       ))}
