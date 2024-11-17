@@ -2,7 +2,7 @@
 
 import { sql } from "drizzle-orm";
 import { db } from "./db";
-import { eventsTable, usersTable } from "./schema";
+import { usersTable } from "./schema";
 import { genSaltSync, hashSync } from "bcrypt-ts";
 
 interface Credentials {

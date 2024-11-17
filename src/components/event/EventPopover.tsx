@@ -53,6 +53,8 @@ const EventPopover = ({ isOpen, onClose, date }: EventPopoverProps) => {
     setSuccess(null);
     startTransition(async () => {
       try {
+        console.log(formData);
+
         // const result = await createEvent(formData);
         // if ("error" in result) {
         //   setError(result.error);

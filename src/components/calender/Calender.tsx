@@ -1,10 +1,5 @@
 "use client";
-import {
-  CalendarEventType,
-  useDateStore,
-  useEventStore,
-  useViewStore,
-} from "@/store/store";
+import { useDateStore, useEventStore, useViewStore } from "@/store/store";
 
 import Sidebar from "@/components/sidebar/Sidebar";
 import WeekCalender from "./calenders/WeekCalender";
@@ -13,7 +8,6 @@ import MonthCalender from "./calenders/MonthCalender";
 import EventPopover from "../event/EventPopover";
 import EventSummary from "../event/EventSummary";
 import { useCallback, useEffect } from "react";
-import dayjs from "dayjs";
 
 const Calender = () => {
   const { selectedView } = useViewStore();
