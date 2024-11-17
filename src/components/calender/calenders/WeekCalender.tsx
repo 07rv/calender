@@ -1,5 +1,5 @@
 import { getHours, getWeekDays } from "@/lib/getTime";
-import { useDateStore } from "@/store/store";
+import { useDateStore, useEventStore } from "@/store/store";
 
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
@@ -8,8 +8,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Circle } from "lucide-react";
 
 const WeekCalender = () => {
-  const { userSelectedDate } = useDateStore();
-
+  const { userSelectedDate, setDate } = useDateStore();
+  const { openPopover, events } = useEventStore();
   const [currentTime, setCurrentTime] = useState(dayjs());
 
   useEffect(() => {
@@ -70,6 +70,10 @@ const WeekCalender = () => {
                     <div
                       key={i}
                       className="relative flex h-12 cursor-pointer flex-col items-center gap-y-2 border-b border-gray-300 hover:bg-gray-100"
+                      onClick={() => {
+                        setDate(dayDate.hour(hour.hour()));
+                        openPopover();
+                      }}
                     ></div>
                   ))}
 

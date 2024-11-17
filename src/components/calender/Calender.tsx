@@ -1,13 +1,26 @@
 "use client";
-import { useViewStore } from "@/store/store";
+import { useDateStore, useEventStore, useViewStore } from "@/store/store";
 
 import Sidebar from "@/components/sidebar/Sidebar";
 import WeekCalender from "./calenders/WeekCalender";
 import DayCalender from "./calenders/DayCalender";
 import MonthCalender from "./calenders/MonthCalender";
+import EventPopover from "../event/EventPopover";
 
 const Calender = () => {
   const { selectedView } = useViewStore();
+
+  const {
+    isPopoverOpen,
+    closePopover,
+    isEventSummaryOpen,
+    closeEventSummary,
+    selectedEvent,
+    setEvents,
+  } = useEventStore();
+
+  const { userSelectedDate } = useDateStore();
+
   return (
     <div className="flex">
       <Sidebar />
@@ -16,6 +29,14 @@ const Calender = () => {
         {selectedView === "week" && <WeekCalender />}
         {selectedView === "day" && <DayCalender />}
       </div>
+
+      {isPopoverOpen && (
+        <EventPopover
+          isOpen={isPopoverOpen}
+          onClose={closePopover}
+          date={userSelectedDate.format("YYYY-MM-DD")}
+        />
+      )}
     </div>
   );
 };

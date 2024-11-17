@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
-import { useDateStore } from "@/store/store";
+import { useDateStore, useEventStore } from "@/store/store";
 import { getHours, isCurrentDay } from "@/lib/getTime";
 import { Circle } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -9,6 +9,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 const DayCalender = () => {
   const [currentTime, setCurrentTime] = useState(dayjs());
   const { userSelectedDate, setDate } = useDateStore();
+  const { openPopover, events } = useEventStore();
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(dayjs());
@@ -55,6 +57,10 @@ const DayCalender = () => {
               <div
                 key={i}
                 className="relative flex h-12 cursor-pointer flex-col items-center gap-y-2 border-b border-gray-300 hover:bg-gray-100"
+                onClick={() => {
+                  setDate(userSelectedDate.hour(hour.hour()));
+                  openPopover();
+                }}
               ></div>
             ))}
 
