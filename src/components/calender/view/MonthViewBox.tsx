@@ -1,5 +1,4 @@
 import EventRenderer from "@/components/event/EventRenderer";
-import { monthEvents } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { useDateStore, useEventStore } from "@/store/store";
 import dayjs from "dayjs";
@@ -11,7 +10,7 @@ const MonthViewBox = ({
   day: dayjs.Dayjs | null;
   rowIndex: number;
 }) => {
-  const { openPopover } = useEventStore();
+  const { openPopover, events } = useEventStore();
   const { setDate } = useDateStore();
   if (!day) {
     return (
@@ -50,7 +49,7 @@ const MonthViewBox = ({
         >
           {isFirstDayOfMonth ? day.format("MMM D") : day.format("D")}
         </h4>
-        <EventRenderer date={day} view="month" events={monthEvents} />
+        <EventRenderer date={day} view="month" events={events} />
       </div>
     </div>
   );

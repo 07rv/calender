@@ -6,12 +6,11 @@ import { getHours, isCurrentDay } from "@/lib/getTime";
 import { Circle } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import EventRenderer from "@/components/event/EventRenderer";
-import { dayEvents } from "@/lib/data";
 
 const DayCalender = () => {
   const [currentTime, setCurrentTime] = useState(dayjs());
   const { userSelectedDate, setDate } = useDateStore();
-  const { openPopover } = useEventStore();
+  const { openPopover, events } = useEventStore();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -65,7 +64,7 @@ const DayCalender = () => {
                 }}
               >
                 <EventRenderer
-                  events={dayEvents}
+                  events={events}
                   date={userSelectedDate.hour(hour.hour())}
                   view="week"
                 />
