@@ -75,7 +75,7 @@ const LeftHeader = () => {
           variant="ghost"
           className="rounded-full p-2"
         >
-          <Menu className="size-6" />
+          <Menu className="!size-5" />
         </Button>
         <Image
           className="mx-2"
