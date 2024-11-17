@@ -1,11 +1,9 @@
-import Calender from "@/components/calender/Calender";
-import Header from "@/components/header/Header";
+import Login from "@/components/login/Login";
 
 export default function Home() {
   return (
     <>
-      <Header />
-      <Calender />
+      <Login />
     </>
   );
 }
