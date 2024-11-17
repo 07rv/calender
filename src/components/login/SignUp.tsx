@@ -1,13 +1,11 @@
 import { useState, Dispatch, SetStateAction } from "react";
 import { createUser } from "../../../db/eventactions";
-import { useRouter } from "next/router";
 
 interface RegisterProps {
   setOpenTab: Dispatch<SetStateAction<number>>;
 }
 
 const SignUp: React.FC<RegisterProps> = ({ setOpenTab }) => {
-  const router = useRouter();
   const [inputField, setInputField] = useState({
     email: "",
     name: "",
@@ -40,7 +38,7 @@ const SignUp: React.FC<RegisterProps> = ({ setOpenTab }) => {
   };
 
   const checkAndSetValidationsErrors = () => {
-    var hasError = false;
+    let hasError = false;
     Object.keys(inputField).map((field) => {
       if (field === "email") {
         if (inputField[field] === "") {
