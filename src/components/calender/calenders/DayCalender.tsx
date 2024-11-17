@@ -11,7 +11,7 @@ import { dayEvents } from "@/lib/data";
 const DayCalender = () => {
   const [currentTime, setCurrentTime] = useState(dayjs());
   const { userSelectedDate, setDate } = useDateStore();
-  const { openPopover, events } = useEventStore();
+  const { openPopover } = useEventStore();
 
   useEffect(() => {
     const interval = setInterval(() => {

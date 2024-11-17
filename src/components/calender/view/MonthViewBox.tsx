@@ -11,13 +11,13 @@ const MonthViewBox = ({
   day: dayjs.Dayjs | null;
   rowIndex: number;
 }) => {
+  const { openPopover } = useEventStore();
+  const { setDate } = useDateStore();
   if (!day) {
     return (
       <div className="h-12 w-full border md:h-28 md:w-full lg:h-full"></div>
     );
   }
-  const { openPopover } = useEventStore();
-  const { setDate } = useDateStore();
   const isFirstDayOfMonth = day.date() === 1;
   const isToday = day.format("DD-MM-YY") === dayjs().format("DD-MM-YY");
 

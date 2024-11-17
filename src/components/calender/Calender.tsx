@@ -17,7 +17,6 @@ const Calender = () => {
     isEventSummaryOpen,
     closeEventSummary,
     selectedEvent,
-    setEvents,
   } = useEventStore();
 
   const { userSelectedDate } = useDateStore();

@@ -48,7 +48,7 @@ const EventPopover = ({ isOpen, onClose, date }: EventPopoverProps) => {
     e.stopPropagation();
   };
 
-  async function onSubmit(formData: FormData) {
+  async function onSubmit() {
     setError(null);
     setSuccess(null);
     startTransition(async () => {
