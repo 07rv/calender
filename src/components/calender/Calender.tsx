@@ -12,7 +12,6 @@ import DayCalender from "./calenders/DayCalender";
 import MonthCalender from "./calenders/MonthCalender";
 import EventPopover from "../event/EventPopover";
 import EventSummary from "../event/EventSummary";
-import { getEventsData } from "../../../db/data";
 import { useCallback, useEffect } from "react";
 import dayjs from "dayjs";
 
@@ -30,14 +29,14 @@ const Calender = () => {
   const { userSelectedDate } = useDateStore();
 
   const bookedCalender = useCallback(async (): Promise<void> => {
-    const eventsData = await getEventsData();
-    const mappedEvents: CalendarEventType[] = eventsData.map((event) => ({
-      id: event.id.toString(),
-      date: dayjs(event.date),
-      title: event.title,
-      description: event.description,
-    }));
-    setEvents(mappedEvents);
+    // const eventsData = await getEventsData();
+    // const mappedEvents: CalendarEventType[] = eventsData.map((event) => ({
+    //   id: event.id.toString(),
+    //   date: dayjs(event.date),
+    //   title: event.title,
+    //   description: event.description,
+    // }));
+    // setEvents(mappedEvents);
   }, [setEvents]);
 
   useEffect(() => {

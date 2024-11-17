@@ -6,7 +6,6 @@ import dayjs from "dayjs";
 import AddTime from "./AddTime";
 
 import { CalendarDays, Clock, Logs, Menu, UsersRound, X } from "lucide-react";
-import { createEvent } from "../../../db/eventactions";
 
 interface EventPopoverProps {
   isOpen: boolean;
@@ -54,15 +53,15 @@ const EventPopover = ({ isOpen, onClose, date }: EventPopoverProps) => {
     setSuccess(null);
     startTransition(async () => {
       try {
-        const result = await createEvent(formData);
-        if ("error" in result) {
-          setError(result.error);
-        } else if (result.success) {
-          setSuccess(result.success);
-          setTimeout(() => {
-            onClose();
-          }, 2000);
-        }
+        // const result = await createEvent(formData);
+        // if ("error" in result) {
+        //   setError(result.error);
+        // } else if (result.success) {
+        //   setSuccess(result.success);
+        //   setTimeout(() => {
+        //     onClose();
+        //   }, 2000);
+        // }
       } catch {
         setError("An unexpected error occurred. Please try again.");
       }

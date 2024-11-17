@@ -6,13 +6,22 @@ import {
   varchar,
   boolean,
   index,
+  integer,
+  pgEnum,
 } from "drizzle-orm/pg-core";
 
-export const eventsTable = pgTable("events", {
+export const typesEnum = pgEnum("type", ["event", "task", "appointment"]);
+
+export const calenderTable = pgTable("calender", {
   id: serial("id").primaryKey(),
-  date: timestamp("date").notNull(),
+  userId: integer("userId").references(() => usersTable.id),
+  type: typesEnum().default("event"),
   title: text("title").notNull(),
+  date: timestamp("date").notNull(),
   description: text("description").notNull(),
+  createdOn: timestamp("createdOn").notNull(),
+  updatedOn: timestamp("updatedOn"),
+  deleteAt: timestamp("deleteAt"),
 });
 
 export const usersTable = pgTable(
