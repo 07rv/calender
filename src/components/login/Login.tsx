@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { signIn, SignInResponse } from "next-auth/react";
 
 const SignIn = () => {
   const [inputField, setInputField] = useState({
@@ -12,7 +13,6 @@ const SignIn = () => {
     password: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [openForgetPassword, setOpenForgetPassword] = useState(false);
   const router = useRouter();
   const inputHandler = (name: string, value: any) => {
     setInputField((prevState) => ({
@@ -52,6 +52,20 @@ const SignIn = () => {
   const submitButton = async () => {
     setIsLoading(true);
     if (!checkAndSetValidationsErrors()) {
+      const status = (await signIn("credentials", {
+        redirect: false,
+        email: inputField.email,
+        password: inputField.password,
+        callbackUrl: "/home",
+      })) as SignInResponse;
+      if (status.ok) {
+        setIsLoading(false);
+        if (status.url) {
+          router.push(status.url);
+        }
+      } else {
+        setIsLoading(false);
+      }
     }
     setIsLoading(false);
   };
@@ -103,12 +117,7 @@ const SignIn = () => {
               )}
             </div>
             <div className="flex items-center justify-between">
-              <div
-                onClick={() => {
-                  setOpenForgetPassword(true);
-                }}
-                className="text-blue-600 dark:text-blue-500 text-sm font-medium hover:underline cursor-pointer"
-              >
+              <div className="text-blue-600 dark:text-blue-500 text-sm font-medium hover:underline cursor-pointer">
                 Forgot password?
               </div>
             </div>
