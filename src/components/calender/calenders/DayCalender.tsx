@@ -1,10 +1,10 @@
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
-import { ScrollArea } from "../ui/scroll-area";
 import { useDateStore } from "@/store/store";
 import { getHours, isCurrentDay } from "@/lib/getTime";
 import { Circle } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const DayCalender = () => {
   const [currentTime, setCurrentTime] = useState(dayjs());

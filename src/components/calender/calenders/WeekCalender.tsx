@@ -4,7 +4,7 @@ import { useDateStore } from "@/store/store";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
-import { ScrollArea } from "../ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Circle } from "lucide-react";
 
 const WeekCalender = () => {
