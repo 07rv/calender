@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import AddTime from "./AddTime";
 
 import { CalendarDays, Clock, Logs, Menu, UsersRound, X } from "lucide-react";
-import { createEvent } from "@/pages/actions/eventactions";
+import { createEvent } from "../../../db/eventactions";
 
 interface EventPopoverProps {
   isOpen: boolean;

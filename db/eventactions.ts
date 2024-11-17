@@ -1,7 +1,7 @@
 "use server";
 
-import { db } from "../../../db/db";
-import { eventsTable } from "../../../db/schema";
+import { db } from "./db";
+import { eventsTable } from "./schema";
 
 export async function createEvent(
   formData: FormData
