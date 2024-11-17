@@ -51,6 +51,7 @@ const AddTime = ({
   return (
     <div className="relative" ref={dropdownRef}>
       <Button
+        type="button"
         variant="outline"
         className="w-24 justify-between"
         onClick={() => setIsOpen(!isOpen)}
@@ -66,6 +67,7 @@ const AddTime = ({
                 <Button
                   key={time}
                   variant="ghost"
+                  type="button"
                   className="w-full justify-start"
                   onClick={() => handleTimeSelect(time)}
                 >

@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import AddTime from "./AddTime";
 
 import { CalendarDays, Clock, Logs, Menu, UsersRound, X } from "lucide-react";
+import { createEvent } from "@/pages/actions/eventactions";
 
 interface EventPopoverProps {
   isOpen: boolean;
@@ -48,11 +49,20 @@ const EventPopover = ({ isOpen, onClose, date }: EventPopoverProps) => {
     e.stopPropagation();
   };
 
-  async function onSubmit() {
+  async function onSubmit(formData: FormData) {
     setError(null);
     setSuccess(null);
     startTransition(async () => {
       try {
+        const result = await createEvent(formData);
+        if ("error" in result) {
+          setError(result.error);
+        } else if (result.success) {
+          setSuccess(result.success);
+          setTimeout(() => {
+            onClose();
+          }, 2000);
+        }
       } catch {
         setError("An unexpected error occurred. Please try again.");
       }
@@ -89,7 +99,10 @@ const EventPopover = ({ isOpen, onClose, date }: EventPopoverProps) => {
             />
           </div>
           <div className="flex items-center justify-between">
-            <Button className="bg-blue-100 text-blue-700 hover:bg-blue-100 hover:text-blue-700">
+            <Button
+              type="button"
+              className="bg-blue-100 text-blue-700 hover:bg-blue-100 hover:text-blue-700"
+            >
               Event
             </Button>
             <Button type="button" variant="ghost">
