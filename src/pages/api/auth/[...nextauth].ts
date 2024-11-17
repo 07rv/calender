@@ -4,6 +4,7 @@ import { NextApiHandler } from "next";
 import { db } from "../../../../db/db";
 import { usersTable } from "../../../../db/schema";
 import { sql } from "drizzle-orm";
+import { compareSync } from "bcrypt-ts";
 
 interface Credentials {
   email: string;
@@ -60,7 +61,7 @@ export const options: NextAuthOptions = {
             return null;
           }
 
-          if (user[0].password !== password) {
+          if (!compareSync(password, user[0].password)) {
             return null;
           }
 

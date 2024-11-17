@@ -3,6 +3,7 @@
 import { sql } from "drizzle-orm";
 import { db } from "./db";
 import { eventsTable, usersTable } from "./schema";
+import { genSaltSync, hashSync } from "bcrypt-ts";
 
 interface Credentials {
   name: string;
@@ -53,7 +54,7 @@ export async function createUser(
 
     await db.insert(usersTable).values({
       name: user.name,
-      password: user.password,
+      password: hashSync(user.password, genSaltSync(10)),
       email: user.email,
       createdOn: sql`CURRENT_TIMESTAMP`,
       updatedOn: sql`CURRENT_TIMESTAMP`,
