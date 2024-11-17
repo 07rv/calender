@@ -1,6 +1,7 @@
 import { useState, Dispatch, SetStateAction } from "react";
 import { useRouter } from "next/router";
 import { signIn, SignInResponse } from "next-auth/react";
+import { Eye, EyeOff } from "lucide-react";
 
 interface RegisterProps {
   setOpenTab: Dispatch<SetStateAction<number>>;
@@ -16,6 +17,7 @@ const Login: React.FC<RegisterProps> = ({ setOpenTab }) => {
     password: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const router = useRouter();
   const inputHandler = (name: string, value: string) => {
     setInputField((prevState) => ({
@@ -102,15 +104,30 @@ const Login: React.FC<RegisterProps> = ({ setOpenTab }) => {
           <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
             Password
           </label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="••••••••"
-            className="focus:ring-blue-600 focus:border-blue-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
-            defaultValue={inputField.password}
-            onChange={(e) => inputHandler(e.target.name, e.target.value)}
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              id="password"
+              placeholder="••••••••"
+              className="focus:ring-blue-600 focus:border-blue-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+              defaultValue={inputField.password}
+              onChange={(e) => inputHandler(e.target.name, e.target.value)}
+            />
+            <div
+              onClick={() => {
+                setShowPassword(!showPassword);
+              }}
+              className="absolute inset-y-0 right-0 flex items-center pr-3.5 cursor-pointer"
+            >
+              {showPassword ? (
+                <Eye className="w-4 h-4" />
+              ) : (
+                <EyeOff className="w-4 h-4" />
+              )}
+            </div>
+          </div>
+
           {errorField && errorField.password && (
             <div className="mt-1 text-red-600">
               <small>{errorField.password}</small>
