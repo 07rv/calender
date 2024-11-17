@@ -10,9 +10,6 @@ const LeftHeader = () => {
   const todaysDate = dayjs();
   const { userSelectedDate, setDate, setMonth, selectedMonthIndex } =
     useDateStore();
-  console.log(userSelectedDate, 1);
-  console.log(selectedMonthIndex, 2);
-
   const { selectedView } = useViewStore();
   const handleTodayClick = () => {
     switch (selectedView) {
@@ -95,8 +92,14 @@ const LeftHeader = () => {
       </div>
 
       <h1 className="hidden text-xl lg:block">
-        {dayjs(new Date(dayjs().year(), selectedMonthIndex)).format(
-          "MMMM YYYY"
+        {selectedView == "month" ? (
+          <>
+            {dayjs(new Date(dayjs().year(), selectedMonthIndex)).format(
+              "MMMM YYYY"
+            )}
+          </>
+        ) : (
+          <> {userSelectedDate.format("MMMM YYYY")}</>
         )}
       </h1>
     </div>
