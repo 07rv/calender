@@ -27,8 +27,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       props: { session },
     };
-  } catch (error) {
-    console.log(error, 1234);
+  } catch {
     return { notFound: true };
   }
 };

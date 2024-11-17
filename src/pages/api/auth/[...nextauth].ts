@@ -1,6 +1,9 @@
 import NextAuth, { NextAuthOptions, Session, User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { NextApiHandler } from "next";
+import { db } from "../../../../db/db";
+import { usersTable } from "../../../../db/schema";
+import { sql } from "drizzle-orm";
 
 interface Credentials {
   email: string;
@@ -46,11 +49,31 @@ export const options: NextAuthOptions = {
       },
       async authorize(credentials) {
         const { email, password } = credentials as Credentials;
-        return {
-          id: "sdfg",
-          name: "sdfg",
-          email: "asdefrg",
-        };
+
+        try {
+          const user = await db
+            .select()
+            .from(usersTable)
+            .where(sql`${usersTable.email} = ${email}`);
+
+          if (user.length <= 0) {
+            return null;
+          }
+
+          if (user[0].password !== password) {
+            return null;
+          }
+
+          return {
+            id: user[0].id.toString(),
+            name: user[0].name,
+            email: user[0].email,
+            image: user[0].image || "",
+            connectToGoogle: user[0].connectToGoogle,
+          };
+        } catch {
+          return null;
+        }
       },
     }),
   ],
