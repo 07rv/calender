@@ -14,7 +14,7 @@ const SignIn = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const inputHandler = (name: string, value: any) => {
+  const inputHandler = (name: string, value: string) => {
     setInputField((prevState) => ({
       ...prevState,
       [name]: value,
@@ -24,7 +24,7 @@ const SignIn = () => {
       [name]: "",
     }));
   };
-  const setErrorMessage = (name: string, value: any) => {
+  const setErrorMessage = (name: string, value: string) => {
     setErrorField((prevState) => ({
       ...prevState,
       [name]: value,
@@ -32,7 +32,7 @@ const SignIn = () => {
   };
 
   const checkAndSetValidationsErrors = () => {
-    var hasError = false;
+    let hasError = false;
     Object.keys(inputField).map((field) => {
       if (field === "email") {
         if (inputField[field] === "") {

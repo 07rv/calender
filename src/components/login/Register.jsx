@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { createUser } from "../../../db/eventactions";
-import { emit } from "process";
 import { useRouter } from "next/router";
 
 const SignUp = () => {

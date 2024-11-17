@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthOptions, Session, User } from "next-auth";
+import NextAuth, { NextAuthOptions, Session } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { NextApiHandler } from "next";
 import { db } from "../../../../db/db";
@@ -24,17 +24,17 @@ export const options: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async session({ session, token, user }) {
+    async session({ session }) {
       try {
         return session;
-      } catch (error) {
+      } catch {
         return session;
       }
     },
-    async signIn({ user, account, profile }) {
+    async signIn() {
       try {
         return true;
-      } catch (error) {
+      } catch {
         return false;
       }
     },
