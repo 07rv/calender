@@ -28,6 +28,11 @@ interface EventStore {
   closeEventSummary: () => void;
 }
 
+interface ToggleSideBarType {
+  isSideBarOpen: boolean;
+  setSideBarOpen: () => void;
+}
+
 export const useViewStore = create<ViewStoreType>()(
   devtools(
     persist(
@@ -81,3 +86,12 @@ export const useEventStore = create<EventStore>((set) => ({
   closeEventSummary: () =>
     set({ isEventSummaryOpen: false, selectedEvent: null }),
 }));
+
+export const useToggleSideBarStore = create<ToggleSideBarType>()(
+  (set, get) => ({
+    isSideBarOpen: true,
+    setSideBarOpen: () => {
+      set({ isSideBarOpen: !get().isSideBarOpen });
+    },
+  })
+);

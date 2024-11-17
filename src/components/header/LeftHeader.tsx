@@ -3,7 +3,11 @@
 import { ChevronLeft, ChevronRight, Menu } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "next/image";
-import { useDateStore, useViewStore } from "@/store/store";
+import {
+  useDateStore,
+  useToggleSideBarStore,
+  useViewStore,
+} from "@/store/store";
 import dayjs from "dayjs";
 
 const LeftHeader = () => {
@@ -11,6 +15,9 @@ const LeftHeader = () => {
   const { userSelectedDate, setDate, setMonth, selectedMonthIndex } =
     useDateStore();
   const { selectedView } = useViewStore();
+
+  const { setSideBarOpen } = useToggleSideBarStore();
+
   const handleTodayClick = () => {
     switch (selectedView) {
       case "month":
@@ -63,7 +70,11 @@ const LeftHeader = () => {
   return (
     <div className="flex items-center gap-3">
       <div className="hidden items-center lg:flex">
-        <Button variant="ghost" className="rounded-full p-2">
+        <Button
+          onClick={() => setSideBarOpen()}
+          variant="ghost"
+          className="rounded-full p-2"
+        >
           <Menu className="size-6" />
         </Button>
         <Image
