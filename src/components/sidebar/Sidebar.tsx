@@ -2,7 +2,6 @@ import { cn } from "@/lib/utils";
 import Create from "./Create";
 import SideBarCalendar from "./SideBarCalendar";
 import SearchUsers from "./SearchUsers";
-import MyCalendars from "./MyCalendars";
 import { useToggleSideBarStore } from "@/store/store";
 
 const Sidebar = () => {
@@ -17,7 +16,6 @@ const Sidebar = () => {
       <Create />
       <SideBarCalendar />
       <SearchUsers />
-      <MyCalendars />
     </aside>
   );
 };
