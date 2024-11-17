@@ -20,7 +20,7 @@ export const usersTable = pgTable(
   {
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 256 }),
-    email: varchar("email", { length: 256 }).notNull(),
+    email: varchar("email", { length: 256 }).notNull().unique(),
     password: varchar("password", { length: 256 }).notNull(),
     image: varchar("image", { length: 256 }),
     connectToGoogle: boolean("connectToGoogle").default(false),
