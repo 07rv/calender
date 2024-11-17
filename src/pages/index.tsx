@@ -1,9 +1,9 @@
-import Register from "@/components/login/Register";
+import LoginPage from "@/components/login/LoginPage";
 
 export default function Home() {
   return (
     <>
-      <Register />
+      <LoginPage />
     </>
   );
 }

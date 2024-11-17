@@ -61,7 +61,6 @@ export async function createUser(
     });
     return { success: true };
   } catch (error) {
-    console.log(error, 12345);
     return { error: "Failed to create event" };
   }
 }
