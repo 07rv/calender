@@ -1,0 +1,1 @@
+ALTER TABLE "calender" ADD COLUMN "guests" text[] DEFAULT '{}'::text[];

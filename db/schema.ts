@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import {
   pgTable,
   text,
@@ -18,6 +19,9 @@ export const calenderTable = pgTable("calender", {
   type: typesEnum().default("event"),
   title: text("title").notNull(),
   date: timestamp("date").notNull(),
+  guest: text("guests")
+    .array()
+    .default(sql`'{}'::text[]`),
   description: text("description").notNull(),
   createdOn: timestamp("createdOn").notNull(),
   updatedOn: timestamp("updatedOn"),
