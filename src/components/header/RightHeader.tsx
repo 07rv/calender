@@ -1,6 +1,7 @@
 "use client";
 
 import { useViewStore } from "@/store/store";
+import { signOut } from "next-auth/react";
 
 import {
   Select,
@@ -10,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { LogOut } from "lucide-react";
 
 const RightHeader = () => {
   const { setView } = useViewStore();
@@ -30,6 +32,14 @@ const RightHeader = () => {
         <AvatarImage src="/avataarimage.jpg" />
         <AvatarFallback>AI</AvatarFallback>
       </Avatar>
+      <LogOut
+        className="cursor-pointer"
+        type="button"
+        onClick={(e) => {
+          e.preventDefault();
+          signOut();
+        }}
+      />
     </div>
   );
 };
