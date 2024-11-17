@@ -1,3 +1,5 @@
+import EventRenderer from "@/components/event/EventRenderer";
+import { monthEvents } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { useDateStore, useEventStore } from "@/store/store";
 import dayjs from "dayjs";
@@ -14,7 +16,7 @@ const MonthViewBox = ({
       <div className="h-12 w-full border md:h-28 md:w-full lg:h-full"></div>
     );
   }
-  const { openPopover, events } = useEventStore();
+  const { openPopover } = useEventStore();
   const { setDate } = useDateStore();
   const isFirstDayOfMonth = day.date() === 1;
   const isToday = day.format("DD-MM-YY") === dayjs().format("DD-MM-YY");
@@ -48,6 +50,7 @@ const MonthViewBox = ({
         >
           {isFirstDayOfMonth ? day.format("MMM D") : day.format("D")}
         </h4>
+        <EventRenderer date={day} view="month" events={monthEvents} />
       </div>
     </div>
   );

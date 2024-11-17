@@ -5,6 +5,8 @@ import { useDateStore, useEventStore } from "@/store/store";
 import { getHours, isCurrentDay } from "@/lib/getTime";
 import { Circle } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import EventRenderer from "@/components/event/EventRenderer";
+import { dayEvents } from "@/lib/data";
 
 const DayCalender = () => {
   const [currentTime, setCurrentTime] = useState(dayjs());
@@ -61,7 +63,13 @@ const DayCalender = () => {
                   setDate(userSelectedDate.hour(hour.hour()));
                   openPopover();
                 }}
-              ></div>
+              >
+                <EventRenderer
+                  events={dayEvents}
+                  date={userSelectedDate.hour(hour.hour())}
+                  view="week"
+                />
+              </div>
             ))}
 
             {isCurrentDay(userSelectedDate) && (

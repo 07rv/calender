@@ -6,6 +6,7 @@ import WeekCalender from "./calenders/WeekCalender";
 import DayCalender from "./calenders/DayCalender";
 import MonthCalender from "./calenders/MonthCalender";
 import EventPopover from "../event/EventPopover";
+import EventSummary from "../event/EventSummary";
 
 const Calender = () => {
   const { selectedView } = useViewStore();
@@ -35,6 +36,14 @@ const Calender = () => {
           isOpen={isPopoverOpen}
           onClose={closePopover}
           date={userSelectedDate.format("YYYY-MM-DD")}
+        />
+      )}
+
+      {isEventSummaryOpen && selectedEvent && (
+        <EventSummary
+          isOpen={isEventSummaryOpen}
+          onClose={closeEventSummary}
+          event={selectedEvent}
         />
       )}
     </div>
