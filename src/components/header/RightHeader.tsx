@@ -1,7 +1,7 @@
 "use client";
 
 import { useViewStore } from "@/store/store";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 import {
   Select,
@@ -15,6 +15,8 @@ import { LogOut } from "lucide-react";
 
 const RightHeader = () => {
   const { setView } = useViewStore();
+  const { data: session } = useSession();
+
   return (
     <div className="flex items-center space-x-4">
       <Select onValueChange={(v) => setView(v)}>
@@ -29,8 +31,10 @@ const RightHeader = () => {
       </Select>
 
       <Avatar>
-        <AvatarImage src="/avataarimage.jpg" />
-        <AvatarFallback>AI</AvatarFallback>
+        <AvatarImage src={session?.user?.image ? session?.user?.image : ""} />
+        <AvatarFallback className="bg-gray-200">
+          {session?.user?.name?.charAt(0)}
+        </AvatarFallback>
       </Avatar>
       <LogOut
         className="cursor-pointer"

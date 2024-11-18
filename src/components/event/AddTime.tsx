@@ -8,7 +8,7 @@ import { ChevronDown } from "lucide-react";
 const AddTime = ({
   onTimeSelect,
 }: {
-  onTimeSelect: (time: string) => void;
+  onTimeSelect: (name: string, value: string) => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTime, setSelectedTime] = useState("00:00");
@@ -44,7 +44,7 @@ const AddTime = ({
 
   const handleTimeSelect = (time: string) => {
     setSelectedTime(time);
-    onTimeSelect(time);
+    onTimeSelect("time", time);
     setIsOpen(false);
   };
 

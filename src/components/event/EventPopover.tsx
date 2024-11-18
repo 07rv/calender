@@ -4,8 +4,10 @@ import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import AddTime from "./AddTime";
+import { useSession } from "next-auth/react";
 
 import { CalendarDays, Clock, Logs, Menu, UsersRound, X } from "lucide-react";
+import { createEvent } from "../../../db/eventactions";
 
 interface EventPopoverProps {
   isOpen: boolean;
@@ -15,11 +17,21 @@ interface EventPopoverProps {
 
 const EventPopover = ({ isOpen, onClose, date }: EventPopoverProps) => {
   const popoverRef = useRef<HTMLDivElement>(null);
-  const [selectedTime, setSelectedTime] = useState("00:00");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean | null>(null);
   const [isPending, startTransition] = useTransition();
 
+  const { data: session } = useSession();
+
+  const [inputField, setInputField] = useState({
+    email: session?.user?.email,
+    type: "event",
+    title: "",
+    date: date,
+    time: "00:00",
+    guest: "",
+    description: "",
+  });
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -44,31 +56,42 @@ const EventPopover = ({ isOpen, onClose, date }: EventPopoverProps) => {
     onClose();
   };
 
+  const inputHandler = (name: string, value: string) => {
+    setInputField((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+    // setErrorField((prevState) => ({
+    //   ...prevState,
+    //   [name]: "",
+    // }));
+  };
+
   const handlePopoverClick = (e: React.MouseEvent) => {
     e.stopPropagation();
   };
 
-  async function onSubmit(formData: FormData) {
+  async function onSubmit(e: React.MouseEvent) {
+    e.preventDefault();
     setError(null);
     setSuccess(null);
     startTransition(async () => {
       try {
-        console.log(formData);
-
-        // const result = await createEvent(formData);
-        // if ("error" in result) {
-        //   setError(result.error);
-        // } else if (result.success) {
-        //   setSuccess(result.success);
-        //   setTimeout(() => {
-        //     onClose();
-        //   }, 2000);
-        // }
+        const result = await createEvent(inputField);
+        if ("error" in result) {
+          setError(result.error);
+        } else if (result.success) {
+          setSuccess(result.success);
+          setTimeout(() => {
+            onClose();
+          }, 2000);
+        }
       } catch {
         setError("An unexpected error occurred. Please try again.");
       }
     });
   }
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
@@ -80,21 +103,24 @@ const EventPopover = ({ isOpen, onClose, date }: EventPopoverProps) => {
         onClick={handlePopoverClick}
       >
         <div className="mb-2 flex items-center justify-between rounded-md bg-slate-100 p-1">
-          <Menu className="h-4 w-4" />
+          <Menu className="!h-5 !w-5" />
           <Button
             variant="ghost"
             size="icon"
             type="button"
             onClick={handleClose}
           >
-            <X className="h-4 w-4" />
+            <X className="!h-5 !w-5" />
           </Button>
         </div>
-        <form className="space-y-4 p-6" action={onSubmit}>
+        <form className="space-y-4 p-6">
           <div>
             <Input
               type="text"
               name="title"
+              id="title"
+              defaultValue={inputField.title}
+              onChange={(e) => inputHandler(e.target.name, e.target.value)}
               placeholder="Add title"
               className="my-4 rounded-none border-0 border-b text-2xl focus-visible:border-b-2 focus-visible:border-b-blue-600 focus-visible:ring-0 focus-visible:ring-offset-0"
             />
@@ -102,14 +128,35 @@ const EventPopover = ({ isOpen, onClose, date }: EventPopoverProps) => {
           <div className="flex items-center justify-between">
             <Button
               type="button"
-              className="bg-blue-100 text-blue-700 hover:bg-blue-100 hover:text-blue-700"
+              variant={inputField.type == "event" ? "default" : "ghost"}
+              onClick={(e) => {
+                e.preventDefault();
+                inputHandler("type", "event");
+              }}
+              className={`${inputField.type == "event" ? "bg-blue-100 text-blue-700 hover:bg-blue-100 hover:text-blue-700" : ""}`}
             >
               Event
             </Button>
-            <Button type="button" variant="ghost">
+            <Button
+              variant={inputField.type == "task" ? "default" : "ghost"}
+              onClick={(e) => {
+                e.preventDefault();
+                inputHandler("type", "task");
+              }}
+              className={`${inputField.type == "task" ? "bg-blue-100 text-blue-700 hover:bg-blue-100 hover:text-blue-700" : ""}`}
+              type="button"
+            >
               Task
             </Button>
-            <Button type="button" variant="ghost">
+            <Button
+              variant={inputField.type == "appointment" ? "default" : "ghost"}
+              onClick={(e) => {
+                e.preventDefault();
+                inputHandler("type", "appointment");
+              }}
+              className={`${inputField.type == "appointment" ? "bg-blue-100 text-blue-700 hover:bg-blue-100 hover:text-blue-700" : ""}`}
+              type="button"
+            >
               Appointmet Schedule <sup className="bg-blue-500">new</sup>
             </Button>
           </div>
@@ -118,9 +165,9 @@ const EventPopover = ({ isOpen, onClose, date }: EventPopoverProps) => {
             <Clock className="size-5 text-gray-600" />
             <div className="flex items-center space-x-3 text-sm">
               <p>{dayjs(date).format("dddd, MMMM D")}</p>
-              <AddTime onTimeSelect={setSelectedTime} />
+              <AddTime onTimeSelect={inputHandler} />
               <input type="hidden" name="date" value={date} />
-              <input type="hidden" name="time" value={selectedTime} />
+              <input type="hidden" name="time" value={inputField.time} />
             </div>
           </div>
 
@@ -128,7 +175,10 @@ const EventPopover = ({ isOpen, onClose, date }: EventPopoverProps) => {
             <UsersRound className="size-5 text-slate-600" />
             <Input
               type="text"
-              name="guests"
+              name="guest"
+              id="guest"
+              defaultValue={inputField.guest}
+              onChange={(e) => inputHandler(e.target.name, "")}
               placeholder="Add guests"
               className={cn(
                 "w-full rounded-lg border-0 bg-slate-100 pl-7 placeholder:text-slate-600",
@@ -141,6 +191,9 @@ const EventPopover = ({ isOpen, onClose, date }: EventPopoverProps) => {
             <Logs className="size-5 text-slate-600" />
             <Input
               type="text"
+              id="description"
+              defaultValue={inputField.description}
+              onChange={(e) => inputHandler(e.target.name, e.target.value)}
               name="description"
               placeholder="Add description"
               className={cn(
@@ -154,14 +207,14 @@ const EventPopover = ({ isOpen, onClose, date }: EventPopoverProps) => {
             <CalendarDays className="size-5 text-slate-600" />
             <div className="">
               <div className="flex items-center space-x-3 text-sm">
-                {" "}
-                <p>De Mawo</p>{" "}
+                <p>{session?.user?.name}</p>
+                <p>{session?.user?.email}</p>
                 <div className="h-4 w-4 rounded-full bg-violet-500"></div>{" "}
               </div>
               <div className="flex items-center space-x-1 text-xs">
                 <span>Busy</span>
                 <div className="h-1 w-1 rounded-full bg-gray-500"></div>
-                <span>Default visibility</span>{" "}
+                <span>Default visibility</span>
                 <div className="h-1 w-1 rounded-full bg-gray-500"></div>
                 <span>Notify 30 minutes before</span>
               </div>
@@ -169,7 +222,7 @@ const EventPopover = ({ isOpen, onClose, date }: EventPopoverProps) => {
           </div>
 
           <div className="flex justify-end space-x-2">
-            <Button type="submit" disabled={isPending}>
+            <Button onClick={onSubmit} type="submit" disabled={isPending}>
               {isPending ? "Saving..." : "Save"}
             </Button>
           </div>
