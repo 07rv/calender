@@ -55,10 +55,16 @@ const EventSummary = ({ isOpen, onClose, event }: EventSummaryPopoverProps) => {
           <p>
             <strong>Title:</strong> {event.title}
           </p>
+          <p>
+            <strong>Type:</strong> {event.type}
+          </p>
           {/* Format the date before displaying it */}
           <p>
             <strong>Date:</strong>{" "}
             {dayjs(event.date).format("dddd, MMMM D, YYYY h:mm A")}
+          </p>
+          <p>
+            <strong>Description:</strong> {event.description}
           </p>
           {/* Add more event details here */}
         </div>

@@ -1,5 +1,10 @@
 "use client";
-import { useDateStore, useEventStore, useViewStore } from "@/store/store";
+import {
+  CalendarEventType,
+  useDateStore,
+  useEventStore,
+  useViewStore,
+} from "@/store/store";
 
 import Sidebar from "@/components/sidebar/Sidebar";
 import WeekCalender from "./calenders/WeekCalender";
@@ -8,8 +13,12 @@ import MonthCalender from "./calenders/MonthCalender";
 import EventPopover from "../event/EventPopover";
 import EventSummary from "../event/EventSummary";
 import { useCallback, useEffect } from "react";
+import { getEventsData } from "../../../db/data";
+import { useSession } from "next-auth/react";
+import dayjs from "dayjs";
 
 const Calender = () => {
+  const { data: session } = useSession();
   const { selectedView } = useViewStore();
   const {
     isPopoverOpen,
@@ -23,14 +32,14 @@ const Calender = () => {
   const { userSelectedDate } = useDateStore();
 
   const bookedCalender = useCallback(async (): Promise<void> => {
-    // const eventsData = await getEventsData();
-    // const mappedEvents: CalendarEventType[] = eventsData.map((event) => ({
-    //   id: event.id.toString(),
-    //   date: dayjs(event.date),
-    //   title: event.title,
-    //   description: event.description,
-    // }));
-    // setEvents(mappedEvents);
+    const eventsData = await getEventsData(session?.user?.email);
+    const mappedEvents = eventsData.map((event) => ({
+      id: event.id.toString(),
+      date: dayjs(event.date),
+      title: event.title,
+      description: event.description,
+    }));
+    setEvents(mappedEvents as CalendarEventType[]);
   }, [setEvents]);
 
   useEffect(() => {

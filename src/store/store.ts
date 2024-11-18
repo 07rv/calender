@@ -69,8 +69,10 @@ export const useDateStore = create<DateStoreType>()(
 export type CalendarEventType = {
   id: string;
   title: string;
+  type: string;
   date: dayjs.Dayjs;
   description: string;
+  guest: [];
 };
 
 export const useEventStore = create<EventStore>((set) => ({
