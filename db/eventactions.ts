@@ -4,7 +4,7 @@ import { sql } from "drizzle-orm";
 import { db } from "./db";
 import { usersTable } from "./schema";
 import { genSaltSync, hashSync } from "bcrypt-ts";
-
+import { UserType } from "../type/types";
 interface Credentials {
   name: string;
   email: string;
@@ -62,5 +62,30 @@ export async function createUser(
     return { success: true };
   } catch (error) {
     return { error: "Failed to create event" };
+  }
+}
+
+export async function getUser(
+  email: string
+): Promise<{ error: string } | { success: boolean } | { user: UserType }> {
+  try {
+    const user = await db
+      .select()
+      .from(usersTable)
+      .where(sql`${usersTable.email} = ${email}`);
+
+    const usertype: UserType = {
+      id: user[0].id.toString(),
+      name: user[0].name!,
+      email: user[0].email,
+      image: user[0].image!,
+      connectToGoogle: user[0].connectToGoogle || false,
+    };
+    if (user && user.length > 0) {
+      return { success: true, user: usertype };
+    }
+    return { success: false, error: "No user found" };
+  } catch {
+    return { success: false, error: "Failed to get user" };
   }
 }
